@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Number guessing game</title>
+  <style>
+    html {
+      font-family: sans-serif;
+    }
+
+    body {
+      width: 50%;
+    }
+
+    .lastResult {
+      color: white;
+      padding: 3px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Number guessing game</h1>
+  <p>
+    We have selected a random number between 1 and 100.<br>
+    See if you can it in 10 turns or fewer. <br>
+    We'll tell you if your guess was too highor too low.
+  </p>
+  <div class="form">
+    <label for="guessField">Enter a guess: </label>
+    <input type="number" name="" id="guessField" class="guessField">
+    <input type="submit" value="Submit guess" class="guessSubmit">
+  </div>
+
+  <div class="resultParas">
+    <p class="guesses"></p>
+    <p class="lastResult"></p>
+    <p class="lowOrHi"></p>
+  </div>
+
+  <script>
+    // 0..100 random number
+    function RandomNumber() {
+      return Math.floor(Math.random() * 100) + 1;
+    }
+    let randomNumber = RandomNumber();
+
+    // below resultParas
+    const guesses = document.querySelector('.guesses');
+    const lastResult = document.querySelector('.lastResult');
+    const lowOrHi = document.querySelector('.lowOrHi');
+
+    // below form
+    const guessSubmit = document.querySelector('.guessSubmit');
+    const guessField = document.querySelector('.guessField');
+
+    let guessCount = 1;
+    let resetButton;
+
+    /*
+     * number guessing game
+     * １０ターン中に１から１００までの数字から一つの数字を導き出せればクリア
+     * 回答が間違っていた場合、ヒントがもらえる（数字が低い、高い）
+     * ゲームが終わると、ボタンが出現し、押すとまたゲームができる（resetButton）
+     */
+    function checkGuess() {
+      let userGuess = Number(guessField.value);
+      if (guessCount === 1) {
+        guesses.textContent = "before: ";
+      }
+      guesses.textContent += userGuess + ' ';
+
+      if (userGuess === randomNumber) {
+        lastResult.textContent = 'conguraguation!!!clear!!!';
+        lastResult.style.backgroundColor = 'green';
+        lowOrHi.textContent = '';
+        setGameOver();
+      } else if (guessCount === 10) {
+        lastResult.textContent = 'Game Over...';
+        setGameOver();
+      } else {
+        lastResult.textContent = 'unCorrect!!!';
+        lastResult.style.backgroundColor = 'red';
+        if (userGuess < randomNumber) {
+          lowOrHi.textContent = "number is lower";
+        } else if (userGuess > randomNumber) {
+          lowOrHi.textContent = "number is higher";
+        }
+      }
+      guessCount++;
+      guessField.value = '';
+      guessField.focus();
+    }
+    // flag
+    guessSubmit.addEventListener('click', checkGuess)
+  
+    /*
+     * ゲーム終了時に呼び出される
+     * formを使えなくする
+     * resetButtonが出現、押すともう一度ゲームができる
+     */
+    function setGameOver() {
+      guessField.disabled = true;
+      guessSubmit.disabled = true;
+      resetButton = document.createElement('button');
+      resetButton.textContent = "Continue?";
+      document.body.appendChild(resetButton);
+      resetButton.addEventListener('click', resetGame);
+    }
+
+    function resetGame() {
+      guessCount = 1;
+      const resetParas = document.querySelectorAll('.resultParas p');
+      for (let i=0; i<resetParas.length; i++) {
+        resetParas[i].textContent = '';
+      }
+      resetButton.parentNode.removeChild(resetButton);
+      guessField.disabled = false;
+      guessSubmit.disabled = false;
+      guessField.value = '';
+      guessField.focus();
+      lastResult.style.backgroundColor = 'white';
+      randomNumber = RandomNumber();
+    }
+  </script>
+</body>
+</html>

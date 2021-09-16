@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Silly story generator</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      width: 350px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    div {
+      padding-bottom: 20px;
+    }
+
+    input[type="text"] {
+      padding: 5px;
+      width: 150px;
+    }
+
+    p {
+      background: #FFC125;
+      color: #5E2612;
+      padding: 10px;
+      visibility: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <label for="customname">Enter custom name:</label>
+    <input type="text" name="customname" id="customname" placeholder="input customname">
+  </div>
+  <div>
+    <label for="us">US</label><input type="radio" name="ukus" id="us" value="us" checked>
+    <label for="uk">uk</label><input type="radio" name="ukus" id="uk" value="uk">
+  </div>
+  <div>
+    <button class="randomize">Generate random story</button>
+  </div>
+  <p class="story"></p>
+
+  <script>
+    const customName = document.getElementById('customname');
+    const randomize = document.querySelector('.randomize');
+    const story = document.querySelector('.story');
+
+    /*
+     * 配列を受け取って、ランダムな配列の要素を返す
+     */
+    function randomValueFromArray(array) {
+      const random = Math.floor(Math.random() * array.length);
+      return array[random];
+    }
+
+    /*
+     * ランダムに話を少し変更された馬鹿話を返す
+     */
+    function result() {
+      let sillyStory = "It was 94 fahrenheit outside, so :insertx: went for a walk. When they got to :inserty:, they stared in horror for a few moments, then :insertz:. Bob saw the whole thing, but was not surprised — :insertx: weighs 300 pounds, and it was a hot day."
+      if (customName.value !== '') {
+        let name = customName.value;
+        sillyStory = sillyStory.replace(/Bob/, name);
+      }
+      if (document.getElementById('uk').checked) {
+        let weight = Math.round(20);
+        let temperature = Math.round(34);
+        sillyStory = sillyStory.replace(/300 pounds/, `${weight} stone`);
+        sillyStory = sillyStory.replace(/94 fahrenheit/, `${temperature} centigrade`);
+      }
+      sillyStory = sillyStory.replace(/:insertx/g, randomValueFromArray(xItems));
+      sillyStory = sillyStory.replace(/:inserty/, randomValueFromArray(yItems));
+      sillyStory = sillyStory.replace(/:insertz/, randomValueFromArray(zItems));
+
+      story.textContent = sillyStory;
+      story.style.visibility = 'visible';
+    }
+
+    randomize.addEventListener('click', result)
+
+    // =========================================
+    // resources
+    // =========================================
+    const xItems = [
+      "Willy the Goblin",
+      "Big Daddy",
+      "Father Christmas",
+    ];
+    const yItems = [
+      "the soup kitchen",
+      "Disneyland",
+      "the White House",
+
+    ];
+    const zItems = [
+      "spontaneously combusted",
+      "melted into a puddle on the sidewalk",
+      "turned into a slug and crawled away",
+    ];
+  </script>
+</body>
+
+</html>
