@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Function</title>
+  <style>
+    .random-bg-area {
+      height: 400px;
+      width: 800px;
+    }
+
+    .random-bg-area div {
+      background-color: red;
+      height: 100px;
+      width: 25%;
+      float: left;
+    }
+  </style>
+</head>
+
+<body>
+  <button class="bg-change">Change background</button>
+  <button class="reset-bg-color">Reset background</button>
+
+  <div class="draw-circle">
+    <h1>Draw Circle</h1>
+    <button class="update">Update circle</button>
+    <canvas width="976" height="678"></canvas>
+  </div>
+
+  <div class="random-bg-area"></div>
+  <script>
+    // background change
+    const bgChangeBtn = document.querySelector('.bg-change')
+    // random draw circle
+    const resetBackGroundBtn = document.querySelector('.reset-bg-color')
+    const drawCircle = document.querySelector('.draw-circle')
+    const updateBtn = document.querySelector('.update')
+    const canvas = document.querySelector("canvas")
+    const ctx = canvas.getContext('2d')
+    let WIDTH = canvas.width = document.documentElement.clientWidth
+    let HEIGHT = canvas.height = document.documentElement.clientHeight
+    // change background area
+    const randomBackgroundArea = document.querySelector('.random-bg-area')
+    for (let i = 0; i < 16; i++) {
+      const div = document.createElement('div')
+      randomBackgroundArea.appendChild(div)
+    }
+    const randomBackgroundDivs = document.querySelectorAll('.random-bg-area div')
+
+    /*
+     * 0からnumberまでの乱数を返す
+     */
+    function random(number) {
+      return Math.floor(Math.random() * number);
+    }
+
+    /*
+     * nodeの背景色をランダムな色にする
+     */
+    function colorChange(node) {
+      const rndCol = 'rgb(' + random(255) + ',' + random(255) + ',' + random(255) + ')';
+      node.style.backgroundColor = rndCol;
+    }
+
+    /* 
+     * canvasに半径circleSizeピクセルの円をcircleCount個ランダムに配置する
+     */
+    function draw() {
+      let circleSize = 40;
+      let circleCount = 100;
+      ctx.clearRect(0, 0, WIDTH, HEIGHT);
+      for (let i = 0; i < circleCount; i++) {
+        ctx.beginPath();
+        ctx.fillStyle = 'rgb(' + random(255) + ',' + random(255) + ',' + random(255) + ')';
+        ctx.arc(random(WIDTH), random(HEIGHT), random(circleSize), 0, 2 * Math.PI);
+        ctx.fill();
+      }
+    }
+
+    /*
+     * randomBackgroundArea内のdivをクリックするとランダムな色に変化する
+     */
+    for (let i = 0; i < randomBackgroundDivs.length; i++) {
+      randomBackgroundDivs[i].onclick = (e) => {
+        e.target.style.backgroundColor = colorChange(randomBackgroundDivs[i]);
+      }
+    }
+
+    // flag
+    updateBtn.addEventListener('click', draw);
+    bgChangeBtn.addEventListener('click', () => {
+      const rndCol = 'rgb(' + random(255) + ',' + random(255) + ',' + random(255) + ')';
+      document.body.style.backgroundColor = rndCol;
+    });
+    resetBackGroundBtn.addEventListener('click', () => {
+      document.body.style.backgroundColor = "white";
+    })
+  </script>
+</body>
+
+</html>

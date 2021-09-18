@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Number guessing game</title>
@@ -18,6 +19,7 @@
     }
   </style>
 </head>
+
 <body>
   <h1>Number guessing game</h1>
   <p>
@@ -92,7 +94,7 @@
     }
     // flag
     guessSubmit.addEventListener('click', checkGuess)
-  
+
     /*
      * ゲーム終了時に呼び出される
      * formを使えなくする
@@ -107,10 +109,16 @@
       resetButton.addEventListener('click', resetGame);
     }
 
+    /*
+     * もう一度ゲームをするときに呼び出される
+     * 値の初期化を行う
+     * formを使えるようにする
+     * 結果の要素を消去する
+     */
     function resetGame() {
       guessCount = 1;
       const resetParas = document.querySelectorAll('.resultParas p');
-      for (let i=0; i<resetParas.length; i++) {
+      for (let i = 0; i < resetParas.length; i++) {
         resetParas[i].textContent = '';
       }
       resetButton.parentNode.removeChild(resetButton);
@@ -123,4 +131,5 @@
     }
   </script>
 </body>
+
 </html>
