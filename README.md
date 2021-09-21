@@ -35,3 +35,48 @@ API は大まかに 2種類に分けられます。
 > - 依存関係なしでスクリプトを単独ですぐに実行できる場合は、`async` を使用します。
 > - スクリプトが他のスクリプトや DOM配置に依存している場合は、`defer` を使用してスクリプトを読み込み、対応する `<script>` 要素をブラウザーで実行して欲しい順序で配置します。
 
+### JSONの取得
+
+> JSON を取得するには、[`XMLHttpRequest`](https://developer.mozilla.org/ja/docs/Web/API/XMLHttpRequest) (しばしば **XHR** と呼ばれる) という API を使用します。これは非常に便利な JavaScript オブジェクトで、JavaScript を使用してサーバからリソース (例：画像、テキスト、JSON、さらには HTML スニペットなど) を取得するネットワークリクエストを行うことができます。つまりページ全体を再読み込みせずに、小さな部分のコンテンツを更新することができます。これにより、よりレスポンシブな Web ページを作成できますが、それをもっと詳細に教えるのはこの記事の範囲を超えています。
+
+ #### usage: 
+
+1. JSONがあるURLを変数に代入する
+
+```javascript
+let requestURL = 'https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json';
+```
+
+
+
+2. XMLHttpRequestを使ってHTTPリクエストを作成する
+
+```javascript
+let request = new XMLHttpRequest();
+```
+
+3. リクエストを開始する
+
+```javascript
+request.open('GET', requestURL);
+```
+
+4. XHRオブジェクトがサーバから返されるデータを判断するようにresponseTypeにJSONを指定する。それからsend()メソットでリクエストを送信する
+
+```javascript
+request.responseType = 'json';
+request.send();
+```
+
+5. 最後にサーバからのレスポンスを待ち、それを処理するコードを記述する
+
+```javascript
+request.onload = function() {
+  const superHeroes = request.response;
+  populateHeader(superHeroes);
+  showHeroes(superHeroes);
+}
+```
+
+6. 値の取得するには`superHeroes['KEY']`で参照することができる
+
