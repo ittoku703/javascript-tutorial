@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>async and await</title>
+</head>
+
+<body>
+  <script>
+    async function myFetch() {
+      let response = await fetch('resources/coffee.jpeg');
+      if (!response.ok) {
+        throw new Error('HTTP error! status: ' + response.status);
+      }
+      return await response.blob();
+    }
+
+    myFetch().then(blob => {
+      let objectURL = URL.createObjectURL(blob);
+      let image = document.createElement('img');
+      image.src = objectURL;
+      document.body.appendChild(image);
+    })
+      .catch(e => {
+        console.log('There has been a problem with your fetch operation: ' + e.message);
+      });
+  </script>
+</body>
+
+</html>
