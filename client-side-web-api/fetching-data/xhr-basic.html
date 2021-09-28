@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XHR Basic</title>
+  <style>
+    html,
+    pre {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      width: 500px;
+      margin: 0 auto;
+      background-color: #ccc;
+    }
+
+    pre {
+      line-height: 1.5;
+      letter-spacing: 0.05rem;
+      padding: 1rem;
+      background-color: white;
+    }
+
+    label {
+      width: 200px;
+      margin-right: 33px;
+    }
+
+    select {
+      width: 350px;
+      padding: 5px;
+    }
+  </style>
+  <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+  <h1>Ajax starting point</h1>
+
+  <form action="">
+    <label for="verse-choose">Choose a verse</label>
+    <select name="verse-choose" id="verse-choose">
+      <option>Verse 1</option>
+      <option>Verse 2</option>
+      <option>Verse 3</option>
+      <option>Verse 4</option>
+    </select>
+  </form>
+
+  <h2>The Conqueror Worm, <em>Edger Allen Poe, 1843</em></h2>
+
+  <pre>
+
+  </pre>
+
+  <script>
+    const verseChoose = document.getElementById('verse-choose');
+    const poemDisplay = document.querySelector('pre');
+
+    // flag
+
+    verseChoose.addEventListener('change', function () {
+      const verse = verseChoose.value;
+      updateDisplay(verse);
+    });
+
+    // selectで選ばれたリソースの中にある詩をpreタグに表示する
+
+    function updateDisplay(verse) {
+      verse = verse.replace(" ", "");
+      verse = verse.toLowerCase();
+      let url = verse + '.txt';
+
+      fetch(url).then((response) => {
+        return response.text()
+      }).then((text) => {
+        poemDisplay.textContent = text;
+      }).catch(e => console.log(e.message))
+    }
+
+    // initialize
+    updateDisplay('verse 1');
+    verseChoose.value = 'Verse 1';
+  </script>
+</body>
+
+</html>
