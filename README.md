@@ -39,7 +39,7 @@ API は大まかに 2種類に分けられます。
 
 > JSON を取得するには、[`XMLHttpRequest`](https://developer.mozilla.org/ja/docs/Web/API/XMLHttpRequest) (しばしば **XHR** と呼ばれる) という API を使用します。これは非常に便利な JavaScript オブジェクトで、JavaScript を使用してサーバからリソース (例：画像、テキスト、JSON、さらには HTML スニペットなど) を取得するネットワークリクエストを行うことができます。つまりページ全体を再読み込みせずに、小さな部分のコンテンツを更新することができます。これにより、よりレスポンシブな Web ページを作成できますが、それをもっと詳細に教えるのはこの記事の範囲を超えています。
 
- #### usage: 
+ #### usage:
 
 1. JSONがあるURLを変数に代入する
 
@@ -91,3 +91,13 @@ request.onload = function() {
 ![Multi-colored macOS beachball busy spinner](https://mdn.mozillademos.org/files/16577/beachball.jpg)
 
 これはいら立つような体験であり、コンピューターの処理能力の良い使い方ではありません――特に、マルチコアプロセッサーが利用できる時代においては。他のタスクを別のプロセッサーコアに処理させて、それが終わった時に知らせることができるのに、座って待っているのは意味がありません。このように合間に別の仕事を終わらせる、ということが**非同期プログラミング**の基本です。非同期にタスクを実行する API は、あなたが使用するプログラミング環境（ウェブ開発であればウェブブラウザー）によって提供されます。
+
+### JavaScript と API とその他 JavaScript ツールの関係
+
+ここまででクライアントサイド API とは何か、JavaScript 言語とどう関係しているのかお話しました。もっとはっきりさせるために一度おさらいして、ついでに他の JavaScript ツールがどう関係してくるのかもお話しましょう:
+
+- JavaScript — ブラウザーに組込まれた高レベルスクリプト言語で、Web ページやアプリに機能を実装するのに使えます。[Node](https://developer.mozilla.org/ja/docs/Learn/Server-side/Express_Nodejs/Introduction) のようなブラウザー以外にも他のプログラミング環境で使えるのは覚えておいて下さい。
+- ブラウザー API — ブラウザーに組込みの JavaScript 言語の上にある構造で、何かの機能をもっと簡単に実装できるようにします。
+- サードパーティ API — サードパーティのプラットフォーム (Twitter や Facebook) 上に作られた構造で、それらのプラットフォームの機能を Web ページで利用できるようにします (例えばあなたの最新のツイートをあなたの Web ページに表示する)。
+- JavaScript ライブラリ — 多くは、[独自の関数](https://developer.mozilla.org/ja/docs/Learn/JavaScript/Building_blocks/Functions#custom_functions) を含んだ一つか複数の JavaScript ファイルで、Web ページにくっつけることでスピードアップしたり共通の機能を書いたりできるものです。例えば、jQuery、Mootools や React がなどが含まれます。
+- JavaScript フレームワーク — ライブラリの一階層上にあたり、JavaScript フレームワーク (例えば Angular や Ember) は HTML や CSS に JavaScript、インストールして一から Web アプリケーションを作成するのに使えるその他もろもろの技術がパッケージ化されている場合が多いです。ライブラリとフレームワークの大きな相違点は、「制御の逆転 (Inversion of Control)」にあります。ライブラリのメソッドを呼ぶ時には、開発者がコントロールしています。フレームワークでは、コントロールが逆転します: フレームワークから開発者のコードが呼ばれるのです。
