@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drawing Graphics</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <canvas class="myCanvas">
+    <p>Add suitable fallbacj here.</p>
+  </canvas>
+  <script>
+    const canvas = document.querySelector('.myCanvas');
+    const width = canvas.width = window.innerWidth;
+    const height = canvas.height = window.innerHeight;
+    const ctx = canvas.getContext('2d');
+
+    // background
+    ctx.fillStyle = 'rgb(0,0,0)';
+    ctx.fillRect(0,0,width,height);
+
+    // rectangle(red)
+    ctx.fillStyle = 'rgb(255,0,0)';
+    ctx.fillRect(50,50,100,150);
+
+    // rectangle(green)
+    ctx.fillStyle = 'rgb(0,255,0)';
+    ctx.fillRect(75,75,100,100);
+
+    // rectangle(purple and wrap)
+    ctx.fillStyle = 'rgba(255, 0, 255, 0.75)';
+    ctx.fillRect(25, 100, 175, 50);
+
+    // border(white)
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = 'rgb(255, 255, 255)';
+    ctx.strokeRect(25, 25, 175, 200);
+
+    // タンジェントに使うらしい
+    function degToRad(degrees) {
+      return degrees * Math.PI / 180;
+    };
+
+    // maxからminまでの乱数を返す
+    function rand(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    // x: 250, y: 50の座標に移動する
+    ctx.fillStyle = 'rgb(255, 0, 0)';
+    ctx.beginPath();
+    ctx.moveTo(250, 50);
+
+    // 正三角形を描く
+    ctx.lineTo(350, 50);
+    let triHeight = 50 * Math.tan(degToRad(60));
+    ctx.lineTo(300, 50+triHeight);
+    ctx.lineTo(250, 50);
+    ctx.fill();
+
+    // x: 100, y: 300の座標に、円を描く
+    ctx.fillStyle = 'rgb(0, 0, 255)';
+    ctx.beginPath();
+    ctx.arc(100, 300, 50, degToRad(0), degToRad(360), false);
+    ctx.fill();
+
+    // パックマンを描く
+    ctx.fillStyle = 'yellow';
+    ctx.beginPath();
+    ctx.arc(250, 300, 50, degToRad(-45), degToRad(45), true);
+    ctx.lineTo(250, 300);
+    ctx.fill();
+
+    // 白い四角形を描く
+    ctx.fillStyle = 'rgb(255,255,255)';
+    ctx.fillRect(350, 0, 250, 250);
+
+    // firefoxを描画する
+    let image = new Image();
+    image.src = 'firefox.png';
+    image.onload = () => { ctx.drawImage(image, 350, 0) }
+  </script>
+</body>
+</html>
