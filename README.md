@@ -116,3 +116,47 @@ request.onload = function() {
 - **クライアント側でのデータ保持 API** は今多くのブラウザーに普及しつつあります。— クライアント側にデータを保存できると、ページを移動しても状態を保存したり、たとえデバイスがオフラインでも動作するようなアプリを作成したいような場合、とても役に立ちます。いくつもの選択肢があり、例えば [Web Storage API](https://developer.mozilla.org/ja/docs/Web/API/Web_Storage_API) を使ったキーバリューストアや、 [IndexedDB API](https://developer.mozilla.org/ja/docs/Web/API/IndexedDB_API) を使ったもっと複雑なテーブル型データ保存などです。
 
 > blob = Binary Large Object
+
+#  Web Storage API
+
+**Web Storage API** は、[クッキー](https://developer.mozilla.org/ja/docs/Glossary/Cookie)を使用するよりも直感的な方法で、ブラウザーがキーと値のペアを保存できる仕組みを提供します。
+
+## [Web Storage の概念と使用方法](https://developer.mozilla.org/ja/docs/Web/API/Web_Storage_API#web_storage_concepts_and_usage)
+
+Web Storage には、以下の 2 種類の仕組みがあります:
+
+- `sessionStorage`は、ページのセッション中 (ページの再読み込みや復元を含む、ブラウザーを開いている間) に使用可能な、オリジンごとに区切られた保存領域を管理します。
+  - セッションデータのみを保存します。つまり、データはブラウザ（またはタブ）が閉じられるまで保存されます。
+  - データがサーバに転送されることはありません。
+  - ストレージの制限がクッキーよりも大きいです（最大 5MB ）。
+- `localStorage`も同様ですが、こちらはブラウザーを閉じたり再び開いたりしても持続します。
+  - 有効期限なしでデータを保存し、 JavaScript を介してクリアされるます。もしくは、ブラウザキャッシュ/ローカルに保存したデータのクリアによりクリアされます。
+  - ストレージ制限は3つの中で最大です。
+
+これらの仕組みは [`Window.sessionStorage`](https://developer.mozilla.org/ja/docs/Web/API/Window/sessionStorage) および [`Window.localStorage`](https://developer.mozilla.org/ja/docs/Web/API/Window/localStorage) プロパティ (正確には、サポートするブラウザーは `Window` オブジェクトが `WindowLocalStorage` および `WindowSessionStorage` オブジェクトを実装しており、これらに `localStorage` および `sessionStorage` プロパティがあります) を通して使用でき、いずれかのプロパティを使用すると [`Storage`](https://developer.mozilla.org/ja/docs/Web/API/Storage) オブジェクトのインスタンスを生成して、データアイテムの保存、取り出し、削除ができます。 同じオリジンに対して `sessionStorage` と `localStorage` は、別の Storage オブジェクトを使用します。 これらは別々に制御されて機能します。
+
+### 旧式な方法: クッキー
+
+クライアント側での保存という考え方には、長い歴史があります。ウェブの初期から、ウェブサイト上でのユーザー体験を個別化するための情報を記憶するべく、サイトは [クッキー](https://developer.mozilla.org/ja/docs/Web/HTTP/Cookies) を使ってきました。そうしたクッキーは、ウェブ上で一般的に使われるクライアント側での保存の、最初期の形式です。
+
+最近では、クライアント側のデータを保存するためのより簡単な仕組みが利用できるため、この記事ではクッキーの使用方法については説明しません。ただし、これはクッキーが現代のウェブで完全に役に立たないことを意味するわけではありません。クッキーは、ユーザーの個別化や状態に関連するデータを保存するために今でも一般的に使用されています。たとえば、セッション ID やアクセストークンです。クッキーの詳細については、[HTTP cookies](https://developer.mozilla.org/ja/docs/Web/HTTP/Cookies) の記事を参照してください。
+
+### 新方式派: ウェブストレージと IndexedDB
+
+前述の「簡単な」機能には次のものがあります:
+
+- [Web Storage API](https://developer.mozilla.org/ja/docs/Web/API/Web_Storage_API) は、名前とそれに対応する値とからなる小規模なデータ項目を保存したり取り出したりするための、とても簡潔な構文を提供しています。これは、ユーザーの名前、ユーザーがログインしているかどうか、画面の背景にどの色を使うべきか、といったような、何らかの単純なデータを記憶するだけでよい場合に有用です。
+- [IndexedDB API](https://developer.mozilla.org/ja/docs/Web/API/IndexedDB_API) は、複雑なデータを保存するための完全なデータベース・システムをブラウザーに提供しています。これは、顧客レコードの完全な集合から、音声ファイルまたは動画ファイルのような複雑なデータ型にいたるまでの、種々の物事に対して使えます。
+
+以下ではこれらの API について学ぶことになります。
+
+### 将来: キャッシュ API
+
+いくつかのモダン・ブラウザーは、新しい [`Cache`](https://developer.mozilla.org/ja/docs/Web/API/Cache) API をサポートしています。この API は、特定の要求に対する HTTP 応答を記憶しておくために設計されています。 また、ネットワーク接続なしに後でサイトを利用できるように、ウェブサイト資産をオフラインに記憶しておく、といったようなことをするうえで非常に有用です。キャッシュは通常、[サービスワーカー API](https://developer.mozilla.org/ja/docs/Web/API/Service_Worker_API) と組み合わせて利用します。もっとも、必ずそうしなくてはならないというわけではありません。
+
+> プロキシサーバとは、企業の社内ネットワークなどからインターネットに接続する際に、出入り口で中継をしているサーバ、それが「プロキシ」です。
+>
+> これによってマルウェアや不正アクセスなどのサイバー攻撃からサーバを守ります。
+>
+> また、内部ネットワークからインターネット接続を行う際、高速なアクセスや安全な通信などを確保するための中継サーバ、という役割もあります。
+
